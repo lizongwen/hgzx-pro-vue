@@ -310,7 +310,7 @@ export default {
 		console.log({ ...{ props, scopedSlots: { ...this.$scopedSlots } } })
 		console.log(Object.keys(this.$slots).map(name => (<template slot={name}>{this.$slots[name]}</template>)))
 		const table = (
-			<a-table {...{ props, scopedSlots: { ...this.$scopedSlots } }} onChange={this.loadData} onExpand={this.expand?this.expand:null}>
+			<a-table {...{ props, scopedSlots: { ...this.$scopedSlots } }} onChange={this.loadData} onExpand={this.expand}>
 				{Object.keys(this.$slots).map(name => (<template slot={name}>{this.$slots[name]}</template>))}
 			</a-table>
 		)
