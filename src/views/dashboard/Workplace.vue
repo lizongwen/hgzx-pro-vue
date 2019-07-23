@@ -3,7 +3,7 @@
   <page-view :avatar="avatar" :title="false">
     <div slot="headerContent">
       <div class="title">{{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ welcome() }}</span></div>
-      <div>前端工程师 | 蚂蚁金服 - 某某某事业群 - VUE平台</div>
+      <div>xxxxxx</div>
     </div>
     <div slot="extra">
       <a-row class="more-info">
@@ -30,7 +30,7 @@
             title="进行中的项目"
             :body-style="{ padding: 0 }">
             <a slot="extra">全部项目</a>
-            <div>
+            <div class="project-card-grid-wrap">
               <a-card-grid class="project-card-grid" :key="i" v-for="(item, i) in projects">
                 <a-card :bordered="false" :body-style="{ padding: 0 }">
                   <a-card-meta>
@@ -50,7 +50,6 @@
               </a-card-grid>
             </div>
           </a-card>
-
           <a-card :loading="loading" title="动态" :bordered="false">
             <a-list>
               <a-list-item :key="index" v-for="(item, index) in activities">
@@ -198,10 +197,10 @@ export default {
     })
   },
   mounted () {
-    this.getProjects()
-    this.getActivity()
-    this.getTeams()
-    this.initRadar()
+    //this.getProjects()
+    //this.getActivity()
+    //this.getTeams()
+    //this.initRadar()
   },
   methods: {
     ...mapGetters(['nickname', 'welcome']),
