@@ -3,12 +3,17 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="角色ID">
+          <a-col :md="6" :sm="24">
+            <a-form-item label="账号">
               <a-input placeholder="请输入"/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
+		  <a-col :md="6" :sm="24">
+            <a-form-item label="名称">
+              <a-input placeholder="请输入"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-form-item label="状态">
               <a-select placeholder="请选择" default-value="0">
                 <a-select-option value="0">全部</a-select-option>
@@ -17,7 +22,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
             <span class="table-page-search-submitButtons">
               <a-button type="primary">查询</a-button>
               <a-button style="margin-left: 8px">重置</a-button>
@@ -31,8 +36,9 @@
       size="default"
       :columns="columns"
       :data="loadData"
+	  :rowKey='"id"'
     >
-      <div
+      <!-- <div
         slot="expandedRowRender"
         slot-scope="record"
         style="margin: 0">
@@ -49,7 +55,8 @@
             <a-col :span="20" v-else>-</a-col>
           </a-col>
         </a-row>
-      </div>
+      </div> -->
+	  <span slot="status" slot-scope="text">{{ text | statusFilter }}</span>
       <span slot="action" slot-scope="text, record">
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
@@ -79,53 +86,52 @@
       v-model="visible"
       @ok="handleOk"
     >
-      <a-form :autoFormCreate="(form)=>{this.form = form}">
-
+      <a-form>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="唯一识别码"
+          label="用户名称"
           hasFeedback
-          validateStatus="success"
         >
-          <a-input placeholder="唯一识别码" v-model="mdl.id" id="no" disabled="disabled" />
+          <a-input placeholder="用户名称" v-model="mdl.id" id="no" />
         </a-form-item>
-
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="角色名称"
+          label="分配角色"
           hasFeedback
-          validateStatus="success"
         >
-          <a-input placeholder="起一个名字" v-model="mdl.name" id="role_name" />
+		 <a-select v-model="mdl.roleId">
+            <a-select-option value="superadmin">超级管理员</a-select-option>
+            <a-select-option value="admin">管理员</a-select-option>
+			<a-select-option value="user">普通用户</a-select-option>
+        </a-select>
         </a-form-item>
-
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="状态"
+          label="联系电话"
           hasFeedback
-          validateStatus="warning"
         >
-          <a-select v-model="mdl.status">
-            <a-select-option value="1">正常</a-select-option>
-            <a-select-option value="2">禁用</a-select-option>
-          </a-select>
+          <a-input placeholder="联系电话" v-model="mdl.telephone" id="no" />
         </a-form-item>
-
+		 <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="电子邮件"
+          hasFeedback
+        >
+          <a-input placeholder="电子邮件" v-model="mdl.email" id="no" />
+        </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="描述"
           hasFeedback
         >
-          <a-textarea :rows="5" v-model="mdl.describe" placeholder="..." id="describe"/>
+          <a-textarea :rows="5" v-model="mdl.describe" placeholder="描述..." id="describe"/>
         </a-form-item>
-
-        <a-divider />
-
-        <a-form-item
+        <!-- <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="拥有权限"
@@ -140,7 +146,7 @@
             </a-col>
           </a-row>
 
-        </a-form-item>
+        </a-form-item> -->
 
       </a-form>
     </a-modal>
@@ -150,7 +156,7 @@
 
 <script>
 import { STable } from '@/components'
-import { getRoleList, getServiceList } from '@/api/manage'
+import { getUserList, getServiceList } from '@/api/manage'
 
 export default {
   name: 'TableList',
@@ -177,25 +183,35 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: {},
-      // 表头
+	  // 表头
       columns: [
         {
-          title: '唯一识别码',
-          dataIndex: 'id'
+          title: '用户账号',
+          dataIndex: 'username'
         },
         {
-          title: '角色名称',
+          title: '用户名称',
           dataIndex: 'name'
         },
         {
-          title: '状态',
-          dataIndex: 'status'
+          title: '用户状态',
+		  dataIndex: 'status',
+		  scopedSlots: { customRender: 'status' }
+		},
+		{
+          title: '所属角色',
+          dataIndex: 'roleName'
         },
         {
           title: '创建时间',
           dataIndex: 'createTime',
           sorter: true
-        }, {
+        }, 
+		{
+          title: '最后登录时间',
+          dataIndex: 'lastLoginTime',
+          sorter: true
+        },{
           title: '操作',
           width: '150px',
           dataIndex: 'action',
@@ -204,7 +220,7 @@ export default {
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getRoleList(parameter)
+        return getUserList(parameter)
           .then(res => {
             console.log('getRoleList', res)
             return res.result
@@ -215,24 +231,33 @@ export default {
       selectedRows: []
     }
   },
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        1: '正常',
+        2: '禁用'
+      }
+      return statusMap[status]
+    }
+  },
   created () {
-    getServiceList().then(res => {
-      console.log('getServiceList.call()', res)
-    })
+    // getServiceList().then(res => {
+    //   console.log('getServiceList.call()', res)
+    // })
 
-    getRoleList().then(res => {
-      console.log('getRoleList.call()', res)
-    })
+    // getRoleList().then(res => {
+    //   console.log('getRoleList.call()', res)
+    // })
   },
   methods: {
     handleEdit (record) {
       this.mdl = Object.assign({}, record)
 
-      this.mdl.permissions.forEach(permission => {
-        permission.actionsOptions = permission.actionEntitySet.map(action => {
-          return { label: action.describe, value: action.action, defaultCheck: action.defaultCheck }
-        })
-      })
+    //   this.mdl.permissions.forEach(permission => {
+    //     permission.actionsOptions = permission.actionEntitySet.map(action => {
+    //       return { label: action.describe, value: action.action, defaultCheck: action.defaultCheck }
+    //     })
+    //   })
 
       this.visible = true
     },

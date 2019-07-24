@@ -273,25 +273,25 @@ export const asyncRouterMap = [
 			path: '/other/list/user-list',
 			name: 'UserList',
 			component: () => import('@/views/other/UserList'),
-			meta: { title: '用户列表', keepAlive: true }
+			meta: { title: '用户管理', keepAlive: true }
 		  },
 		  {
 			path: '/other/list/role-list',
 			name: 'RoleList',
 			component: () => import('@/views/other/RoleList'),
-			meta: { title: '角色列表', keepAlive: true }
+			meta: { title: '角色管理', keepAlive: true }
 		  },
 		  {
 			path: '/other/list/system-role',
 			name: 'SystemRole',
 			component: () => import('@/views/role/RoleList'),
-			meta: { title: '角色列表2', keepAlive: true }
+			meta: { title: '角色管理2', keepAlive: true }
 		  },
 		  {
 			path: '/other/list/permission-list',
 			name: 'PermissionList',
 			component: () => import('@/views/other/PermissionList'),
-			meta: { title: '权限列表', keepAlive: true }
+			meta: { title: '权限管理', keepAlive: true }
 		  }
 		]
 	  }
