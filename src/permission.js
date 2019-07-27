@@ -15,6 +15,7 @@ const whiteList = ['login', 'register', 'registerResult'] // no redirect whiteli
 router.beforeEach((to, from, next) => {
 console.log(to)
   NProgress.start() // start progress bar
+//   return
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   if (Vue.ls.get(ACCESS_TOKEN)) {
     /* has token */

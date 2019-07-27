@@ -83,9 +83,9 @@ const orgTree = () => {
 const role = () => {
 	return builder({
 		'data': [{
-			'id': 'admin',
-			'name': '管理员',
-			'describe': '拥有所有权限',
+			'id': 'superadmin',
+			'name': '超级管理员',
+			'describe': '这是超级管理员角色',
 			'status': 1,
 			'creatorId': 'system',
 			'createTime': 1497160610259,
@@ -330,11 +330,11 @@ const role = () => {
 			]
 		},
 		{
-			'id': 'svip',
-			'name': 'SVIP',
-			'describe': '超级会员',
+			'id': 'admin',
+			'name': '管理员',
+			'describe': '这是管理员角色',
 			'status': 1,
-			'creatorId': 'system',
+			'creatorId': 'super',
 			'createTime': 1532417744846,
 			'deleted': 0,
 			'permissions': [{
@@ -667,7 +667,78 @@ const role = () => {
 		'totalCount': 5
 	})
 }
-
+const user = () => {
+	return builder({
+		'pageSize': 10,
+		'pageNo': 0,
+		'totalPage': 1,
+		'totalCount': 3,
+		'data': [{
+			'id': '111',
+			'name': '老板',
+			'username': 'super',
+			'avatar': '/avatar2.jpg',
+			'status': '1',
+			'telephone': '13988888888',
+			'lastLoginIp': '27.154.74.117',
+			'lastLoginTime': 1534837621348,
+			'creatorId': 'system',
+			'createTime': 1497160610259,
+			'email': '123@qq.com',
+			'deleted': 0,
+			'roleId': 'superadmin',
+			'roleName':'超级管理员'
+		},
+		{
+			'id': '222',
+			'name': '主管',
+			'username': 'admin',
+			'avatar': '/avatar2.jpg',
+			'status': '1',
+			'telephone': '13988888888',
+			'lastLoginIp': '27.154.74.117',
+			'lastLoginTime': 1534837621348,
+			'creatorId': 'super',
+			'createTime': 1497160610259,
+			'email': '123@qq.com',
+			'deleted': 0,
+			'roleId': 'admin',
+			'roleName':'管理员'
+		},
+		{
+			'id': '333',
+			'name': '用户名1',
+			'username': 'lzw1',
+			'avatar': '/avatar2.jpg',
+			'status': '1',
+			'telephone': '13988888888',
+			'lastLoginIp': '27.154.74.117',
+			'lastLoginTime': 1534837621348,
+			'creatorId': 'super',
+			'createTime': 1497160610259,
+			'email': '123@qq.com',
+			'deleted': 0,
+			'roleId': 'user',
+			'roleName':'普通用户'
+		},
+		{
+			'id': '444',
+			'name': '用户名2',
+			'username': 'lzw2',
+			'avatar': '/avatar2.jpg',
+			'status': '2',
+			'telephone': '13988888888',
+			'lastLoginIp': '27.154.74.117',
+			'lastLoginTime': 1534837621348,
+			'creatorId': 'super',
+			'createTime': 1497160610259,
+			'email': '123@qq.com',
+			'deleted': 0,
+			'roleId': 'user',
+			'roleName':'普通用户'
+		}]
+	})
+}
 const permissionNoPager = () => {
 	return builder([{
 		'id': 'marketing',
@@ -852,7 +923,7 @@ const permissions = () => {
 					'add',
 					'query',
 				]
-			},{
+			}, {
 				'key': 12,
 				'id': 'roles',
 				'name': '角色管理',
@@ -874,12 +945,13 @@ const permissions = () => {
 			}
 			]
 		},
-		
+
 		]
 	})
 }
 
 Mock.mock(/\/org\/tree/, 'get', orgTree)
 Mock.mock(/\/role/, 'get', role)
+Mock.mock(/\/user/, 'get', user)
 Mock.mock(/\/permission\/no-pager/, 'get', permissionNoPager)
 Mock.mock(/\/permission/, 'get', permissions)

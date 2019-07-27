@@ -34,20 +34,17 @@
   </a-modal>
 </template>
 <script>
-// import { VueCropper } from 'vue-cropper'
+import { VueCropper } from 'vue-cropper'
 
 export default {
-  /*
   components: {
     VueCropper
   },
-  */
   data () {
     return {
       visible: false,
       id: null,
       confirmLoading: false,
-
       options: {
         img: '/avatar2.jpg',
         autoCrop: true,
@@ -60,8 +57,10 @@ export default {
   },
   methods: {
     edit (id) {
+		console.log(1111)
       this.visible = true
-      this.id = id
+	  this.id = id
+	 console.log(222)
       /* 获取原始头像 */
     },
     close () {

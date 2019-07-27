@@ -73,7 +73,7 @@ export default {
   components: {},
   data () {
     return {
-      dataSource
+      dataSource:[]
     }
   }
 }
